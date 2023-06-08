@@ -12,4 +12,7 @@ export default class Todo extends Model {
             user: this.belongsTo(User, 'userId')
         }
     }
+    static piniaOptions = {
+        persist: true
+    }
 }

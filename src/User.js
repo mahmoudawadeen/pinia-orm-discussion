@@ -19,4 +19,7 @@ export default class User extends Model {
             media: this.morphTo([Audio, Photo], 'mediaId', 'mediaType'),
         }
     }
+    static piniaOptions = {
+        persist: true
+    }
 }

@@ -9,4 +9,7 @@ export default class Audio extends Model {
             name: this.string(''),
         }
     }
+    static piniaOptions = {
+        persist: true
+    }
 }
