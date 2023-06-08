@@ -9,8 +9,13 @@
       <select v-model="userSelect"
               class="mb-8 block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
         <option :value="null" selected>None</option>
-        <option v-for="user in users" :value="user.id" :key="user.id">{{ user.name }} - media: {{user.media?.name}}</option>
+        <option v-for="user in users" :value="user.id" :key="user.id">{{ user.name }} - media: {{ user.media?.name }}
+        </option>
       </select>
+      <button @click="seed"> Seed</button>
+      <input type="text" v-model="text"/>
+      <button @click="add"> Add</button>
+      <button @click="reset"> Reset</button>
       <user-card v-if="selectedData" :user="selectedData" :todos="selectedData.todos" @removeTodo="removeTodo"/>
       <div v-else class="min-h-[350px]"></div>
     </div>
@@ -28,10 +33,10 @@ import Audio from "@/Audio";
 
 const userRepo = useRepo(User)
 const todoRepo = useRepo(Todo)
+const audioRepo = useRepo(Audio);
 
 const userSelect = ref(null)
 
-useRepo(Audio).save(data.media.audios);
 todoRepo.save(data.todo);
 const users = computed(() => userRepo.with('todos').with('media').get())
 
@@ -39,6 +44,21 @@ const selectedData = computed(() => users.value.find(user => user.id === userSel
 
 const removeTodo = (id) => {
   todoRepo.destroy(id)
+}
+const seed = () => {
+  useRepo(Audio).save(data.media.audios);
+  todoRepo.save(data.todo);
+}
+
+const reset = () => {
+  userRepo.flush();
+  todoRepo.flush();
+  audioRepo.flush();
+}
+
+const text = ref('');
+const add = () => {
+  userRepo.save({name: text.value});
 }
 </script>
 
