@@ -38,7 +38,7 @@ const audioRepo = useRepo(Audio);
 const userSelect = ref(null)
 
 todoRepo.save(data.todo);
-const users = computed(() => userRepo.with('todos').with('media').get())
+const users = computed(() => userRepo.withAllRecursive().get())
 
 const selectedData = computed(() => users.value.find(user => user.id === userSelect.value))
 
